@@ -255,7 +255,7 @@ export default function TimerDetailPage() {
                             targetDate={timer.target_date}
                             timerType={timer.timer_type}
                             color={timer.color}
-                            size="xl"
+                            size="lg"
                         />
                     </div>
 
