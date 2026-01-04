@@ -124,12 +124,24 @@ export default function LandingPage() {
             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 pointer-events-none" />
             <div className="p-8 rounded-3xl bg-card/50 border border-border backdrop-blur-sm">
               <p className="text-sm text-foreground-muted mb-4">Do Nowego Roku 2027</p>
-              <TimerDisplay
-                targetDate={demoTargetDate}
-                timerType="countdown"
-                color="#ef4444"
-                size="lg"
-              />
+              {/* Mobile */}
+              <div className="lg:hidden">
+                <TimerDisplay
+                  targetDate={demoTargetDate}
+                  timerType="countdown"
+                  color="#ef4444"
+                  size="sm"
+                />
+              </div>
+              {/* Desktop */}
+              <div className="hidden lg:block">
+                <TimerDisplay
+                  targetDate={demoTargetDate}
+                  timerType="countdown"
+                  color="#ef4444"
+                  size="lg"
+                />
+              </div>
             </div>
           </motion.div>
         </div>

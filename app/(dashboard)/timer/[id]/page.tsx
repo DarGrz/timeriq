@@ -251,12 +251,24 @@ export default function TimerDetailPage() {
 
                     {/* Timer Display */}
                     <div className="py-8 flex justify-center">
-                        <TimerDisplay
-                            targetDate={timer.target_date}
-                            timerType={timer.timer_type}
-                            color={timer.color}
-                            size="lg"
-                        />
+                        {/* Mobile */}
+                        <div className="lg:hidden">
+                            <TimerDisplay
+                                targetDate={timer.target_date}
+                                timerType={timer.timer_type}
+                                color={timer.color}
+                                size="sm"
+                            />
+                        </div>
+                        {/* Desktop */}
+                        <div className="hidden lg:block">
+                            <TimerDisplay
+                                targetDate={timer.target_date}
+                                timerType={timer.timer_type}
+                                color={timer.color}
+                                size="lg"
+                            />
+                        </div>
                     </div>
 
                     {/* Info */}

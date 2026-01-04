@@ -100,12 +100,24 @@ export function PublicTimerView({ timer }: PublicTimerViewProps) {
                     transition={{ delay: 0.5, duration: 0.5 }}
                     className="py-12"
                 >
-                    <TimerDisplay
-                        targetDate={timer.target_date}
-                        timerType={timer.timer_type}
-                        color={timer.color}
-                        size="xl"
-                    />
+                    {/* Mobile */}
+                    <div className="lg:hidden">
+                        <TimerDisplay
+                            targetDate={timer.target_date}
+                            timerType={timer.timer_type}
+                            color={timer.color}
+                            size="md"
+                        />
+                    </div>
+                    {/* Desktop */}
+                    <div className="hidden lg:block">
+                        <TimerDisplay
+                            targetDate={timer.target_date}
+                            timerType={timer.timer_type}
+                            color={timer.color}
+                            size="lg"
+                        />
+                    </div>
                 </motion.div>
 
                 {/* Date Info */}
