@@ -106,7 +106,7 @@ export function PublicTimerView({ timer }: PublicTimerViewProps) {
                             targetDate={timer.target_date}
                             timerType={timer.timer_type}
                             color={timer.color}
-                            size="md"
+                            size="sm"
                         />
                     </div>
                     {/* Desktop */}
