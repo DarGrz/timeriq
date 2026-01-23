@@ -1,3 +1,5 @@
+import { ExerciseResult, ExerciseType } from './workout';
+
 export type TimerType = 'countdown' | 'countup';
 
 export type RepeatType = 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -46,6 +48,33 @@ export interface TimeLeft {
     isPast: boolean;
 }
 
+export interface WorkoutSchedule {
+    id: string;
+    user_id: string;
+    title: string;
+    duration: number;
+    frequency: number;
+    daily_repetitions: number;
+    exercises: ExerciseType[];
+    is_active: boolean;
+    start_time: string | null;
+    end_time: string | null;
+    work_days_only: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface WorkoutSession {
+    id: string;
+    schedule_id: string;
+    user_id: string;
+    scheduled_time: string;
+    completed_at: string | null;
+    exercises_completed: ExerciseResult[];
+    skipped: boolean;
+    created_at: string;
+}
+
 export interface Database {
     public: {
         Tables: {
@@ -63,6 +92,16 @@ export interface Database {
                 Row: TimerShare;
                 Insert: Omit<TimerShare, 'id' | 'created_at'>;
                 Update: Partial<Omit<TimerShare, 'id' | 'created_at'>>;
+            };
+            workout_schedules: {
+                Row: WorkoutSchedule;
+                Insert: Omit<WorkoutSchedule, 'id' | 'created_at' | 'updated_at'>;
+                Update: Partial<Omit<WorkoutSchedule, 'id' | 'user_id' | 'created_at'>>;
+            };
+            workout_sessions: {
+                Row: WorkoutSession;
+                Insert: Omit<WorkoutSession, 'id' | 'created_at'>;
+                Update: Partial<Omit<WorkoutSession, 'id' | 'user_id' | 'created_at'>>;
             };
         };
     };

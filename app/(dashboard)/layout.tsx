@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/layout/navbar';
+import { WorkoutReminder } from '@/components/workout/workout-reminder';
 
 export default function DashboardLayout({
     children,
@@ -13,6 +14,7 @@ export default function DashboardLayout({
                     {children}
                 </div>
             </main>
+            <WorkoutReminder />
         </>
     );
 }

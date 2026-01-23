@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/supabase/client';
 import { cn } from '@/lib/utils';
-import { Timer, Plus, LogOut, User, Menu, X } from 'lucide-react';
+import { Timer, Plus, LogOut, User, Menu, X, Dumbbell } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 
@@ -66,6 +66,15 @@ export function Navbar() {
                                         size="sm"
                                     >
                                         Moje timery
+                                    </Button>
+                                </Link>
+                                <Link href="/workouts">
+                                    <Button
+                                        variant={pathname === '/workouts' ? 'secondary' : 'ghost'}
+                                        size="sm"
+                                        leftIcon={<Dumbbell className="w-4 h-4" />}
+                                    >
+                                        Ćwiczenia
                                     </Button>
                                 </Link>
                                 <Link href="/create">
@@ -134,6 +143,14 @@ export function Navbar() {
                                     className="block px-4 py-2 rounded-lg hover:bg-card transition-colors"
                                 >
                                     Moje timery
+                                </Link>
+                                <Link
+                                    href="/workouts"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-card transition-colors"
+                                >
+                                    <Dumbbell className="w-4 h-4" />
+                                    Ćwiczenia
                                 </Link>
                                 <Link
                                     href="/create"
