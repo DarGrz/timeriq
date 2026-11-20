@@ -217,6 +217,28 @@ export async function processSyncBatch(
           .maybeSingle();
 
         if (!current || (current.deleted_at && entity !== 'fasting_settings')) {
+          if (entity === 'fasting_settings') {
+            const insertPayload = {
+              ...DEFAULT_SETTINGS,
+              ...fieldsToUpdate,
+              user_id: userId,
+            };
+            const { data: created, error: insertError } = await supabase
+              .from('fasting_settings')
+              .insert(insertPayload)
+              .select('*')
+              .single();
+
+            if (!insertError && created) {
+              results.push({
+                id,
+                status: 'applied',
+                revision: created.revision,
+              });
+              continue;
+            }
+          }
+
           results.push({
             id,
             status: 'not_found',

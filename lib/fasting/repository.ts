@@ -31,6 +31,20 @@ export async function getSettings(
 
   if (error) throw error;
   if (!data) {
+    // Auto-create initial default settings row in DB so the user has a persisted record
+    const { data: created, error: insertError } = await supabase
+      .from('fasting_settings')
+      .insert({
+        user_id: userId,
+        ...DEFAULT_SETTINGS,
+      })
+      .select('*')
+      .maybeSingle();
+
+    if (!insertError && created) {
+      return created as FastingSettings;
+    }
+
     return {
       user_id: userId,
       ...DEFAULT_SETTINGS,
@@ -94,7 +108,34 @@ export async function upsertSettings(
       .maybeSingle();
 
     if (!current.data) {
-      throw new FastingHttpError(404, 'NOT_FOUND', 'Settings record not found. Create with base_revision=0.');
+      // Record does not exist in DB yet: auto-create instead of failing with 404
+      const insertPayload = {
+        ...DEFAULT_SETTINGS,
+        ...settingsData,
+        user_id: userId,
+      };
+
+      const { data: created, error: insertError } = await supabase
+        .from('fasting_settings')
+        .insert(insertPayload)
+        .select('*')
+        .single();
+
+      if (insertError) {
+        if (insertError.code === '23505') {
+          const refetched = await supabase
+            .from('fasting_settings')
+            .select('*')
+            .eq('user_id', userId)
+            .maybeSingle();
+          if (refetched.data) {
+            return refetched.data as FastingSettings;
+          }
+        }
+        throw insertError;
+      }
+
+      return created as FastingSettings;
     }
 
     throw new FastingHttpError(409, 'CONFLICT', 'Settings revision conflict', {

@@ -263,9 +263,10 @@ Tworzy lub aktualizuje ustawienia użytkownika z optymistyczną kontrolą wersji
   "goal_hours": 18
 }
 ```
-- **Zasada:**
-  - Pierwsze utworzenie: `base_revision: 0`.
-  - Kolejne aktualizacje: `base_revision > 0`. W przypadku niezgodności z bieżącą rewizją serwera zwracany jest kod `409 Conflict`.
+- **Zasada działania i odporność offline:**
+  - Jeśli użytkownik nie ma jeszcze wiersza w tabeli `fasting_settings` w bazie, serwer **automatycznie inicjalizuje rekord** wartościami domyślnymi połączonymi z przesłanymi danymi (nie zwraca błędu 404).
+  - Dla istniejących rekordów serwer weryfikuje `base_revision`. W przypadku niezgodności z bieżącą rewizją serwera zwracany jest kod `409 Conflict` z aktualnym stanem `current_data`.
+  - Pole `base_revision` jest opcjonalne (domyślnie `0`).
 - **Odpowiedź 200:**
 ```json
 {

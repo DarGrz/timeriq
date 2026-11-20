@@ -44,7 +44,7 @@ const jsonObjectSchema = (maxBytes = 16384) =>
 // Settings update schema
 export const putSettingsSchema = z
   .object({
-    base_revision: z.number().int().min(0),
+    base_revision: z.number().int().min(0).default(0),
     goal_hours: goalHoursEnum.optional(),
     profile_age: z.number().int().min(18).max(100).nullable().optional(),
     profile_sex: sexEnum.nullable().optional(),

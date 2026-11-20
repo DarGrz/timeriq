@@ -4,9 +4,11 @@ import assert from 'node:assert';
 import {
   createUserEntity,
   deleteUserEntity,
+  getSettings,
   getUserEntityById,
   listUserEntities,
   updateUserEntity,
+  upsertSettings,
 } from '../../lib/fasting/repository';
 import { FastingHttpError } from '../../lib/fasting/errors';
 import { FastingSession, FastingWeightEntry } from '../../types/fasting-api';
@@ -454,4 +456,20 @@ test('Repeated entity creation with existing ID is idempotent', async () => {
 
   assert.strictEqual(res.id, pomodoroId);
   assert.strictEqual(res.revision, 1);
+});
+
+test('upsertSettings automatically initializes non-existent settings row without 404', async () => {
+  const userId = '11111111-1111-1111-1111-111111111111';
+  const client = createMockSupabase(userId); // Empty database
+
+  // Client attempts update with base_revision = 1 on fresh DB -> auto-creates instead of 404
+  const res = await upsertSettings(client, userId, { theme: 'amoled', goal_hours: 18 }, 1);
+  assert.strictEqual(res.user_id, userId);
+  assert.strictEqual(res.theme, 'amoled');
+  assert.strictEqual(res.goal_hours, 18);
+  assert.strictEqual(res.revision, 1);
+
+  // Subsequent getSettings retrieves this persisted row
+  const current = await getSettings(client, userId);
+  assert.strictEqual(current.theme, 'amoled');
 });
