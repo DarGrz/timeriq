@@ -192,7 +192,7 @@ export default function WorkoutsPage() {
                 <div>
                     <h1 className="text-3xl font-bold flex items-center gap-3">
                         <Dumbbell className="w-8 h-8 text-accent" />
-                        Ćwiczenia biurowe
+                        Ćwiczenia przy biurku
                     </h1>
                     <p className="text-foreground-muted mt-1">
                         Zadbaj o zdrowie podczas pracy - krótkie treningi co godzinę
